@@ -1,0 +1,169 @@
+What is Kubernetes:
+open source contaner orh tool
+developed by google
+help manage contanerized app
+
+
+Why?
+Trend from Monolith to microservices
+Incresed usage of container
+
+features of archistration tool:
+High availability or no DT
+Scalabiloity- High performmance
+Disaster recovery-backup and restore
+
+
+K8s Components:
+
+Node and POD
+Pod:
+smallest unit of k8s
+Abstraction over container
+Usually 1 application per pod
+Ech pods gets its own IP address(Internal IP)
+communication via IP Addresses
+New IP address on recreation
+
+Servie:
+Permanent IP Address-- attached to each pod. lifecycle of POD and servie not connected. So when node dies service ll be there
+External service, internal service
+
+Ingress
+External req
+
+
+ConfigMap and  secret
+Database URL usually in the built application
+
+external config of ur application
+DB_URL=mongo=db
+Attached to nodeDont put UN and PWD in config map
+
+Use secret to store secret data in base 64 encoded
+
+Use as env variable or property file
+
+Volume:
+to persist data
+attach phusial storage or hard drive to pod
+storage on local machine or remoete outside k8s cluster
+k8s doesnt manage data persistance
+attached to pod-->local /remote storage(outside k8s cluster) to persist data
+
+------------------------------------------------
+------------------------------------------------
+Deployment and stateful set
+
+
+Lets suppose my app pod dies
+we are having replica would run on aother node
+
+Service has 2 functionality
+permanent ip
+load balancer
+
+
+Deployment:
+blueprint of my-app pods
+can scale up and down deploymnet pod
+abstraction of pods
+
+Database pod:
+cant be replicate via deployment to avoid data inconsistencies
+stateful set for statefull app or DB
+
+Deploymnet for stateLess
+DB are often hosted outside k8s cluster
+------------------------------------------
+abstraction of container--pod
+communication--service
+route traffix/ --ingress
+config map / secret
+volumne
+deploymentstseful set
+
+
+----------------------------------------
+k8s architecture
+
+Node processes
+
+worker machines:
+each node has multiple pods
+3 process--
+1..container runtime:Docker
+2..kubelet--
+interect with container and pods
+start pod with container inside
+3..kube proxy--forwards the request
+communication via service
+forward replica to same node pod
+
+How do you interect with this cluster:
+How to schedule pod?
+monior?
+reschedule/restart pod?
+
+
+Managing proess are done by Master node:
+4 process run on every maser node--
+API Service-->Cluster gateway()
+acts a sgatekeeper of
+
+Scheduler
+some req-->api server-->validate req--->other processreq like schedule new pod
+scheduler deciders on which node new pod need to scheduled
+
+controller manager-->detect cluster sttate changes
+controller manager-->scheduler-->kubelet--
+etcd: is the cluster brain
+cluster changes store in key value
+what resources are available
+is tthe clusterhealthy
+Applicaion data is not stored in etcd
+
+usually made of multiple master
+
+Example cluster setup:
+2 master-->less resource
+3 worker-->more resource
+
+--------------------------------------------------
+----------------------------------------------------------------------
+minikube an d kubectl
+minikube-->>one node setup-->master worker run on same node
+-->>for testing purpose
+
+what is kubectl:
+command line tool for kubernetes cluster
+enable pods to run on node
+-------------------------------------------------'
+minikube start --vm-driver=hyperkit
+kubectl get nodes
+kubectl versionminikube status
+
+
+Basic commands:
+kubectl get nodes
+kubectl get pod
+kubectl get services
+
+kubectl create deployment nginx-depl --image=nginx-depl
+kubectl get deployment
+kubectl get replicaset
+kubectl edit deployment  nginx-depl #change replica as 2
+kubectl get pod
+kubectl get replicaset
+
+kubectl logs ngix-deply-123-123
+kubectl exec -it pod_name --/bin/bash
+
+-----------------------
+kubects get deployment
+kubectl delete deployment dep_nane
+CRED happens at deployment lever
+
+
+kubectl apply -f config-file.yaml
+kubectl apply -f nginx_deplyment.yaml
